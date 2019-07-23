@@ -10,6 +10,11 @@ namespace Snake
     {
         static void Main(string[] args)
         {
+            //Console.SetBufferSize(50, 50);
+
+            Snake snake = new Snake();
+            Game game = new Game(snake);
+            game.Start();
         }
     }
 }

@@ -8,11 +8,11 @@ namespace Snake
 {
     public class Snake
     {
-        public Queue<Coordinates> Head { get; private set; }
+        public List<Coordinates> SnakeBody { get; private set; }
 
         public Snake()
         {
-            Head = new Queue<Coordinates>();
+            SnakeBody = new List<Coordinates>() { new Coordinates(0, 0), new Coordinates(1, 0), new Coordinates(2, 0) };
         }
     }
 }
