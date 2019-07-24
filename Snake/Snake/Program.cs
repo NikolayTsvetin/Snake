@@ -10,7 +10,8 @@ namespace Snake
     {
         static void Main(string[] args)
         {
-            //Console.SetBufferSize(50, 50);
+            Console.SetBufferSize(Constants.Width, Constants.Height);
+            Console.CursorVisible = false;
 
             Snake snake = new Snake();
             Game game = new Game(snake);
