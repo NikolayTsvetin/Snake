@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Snake
@@ -26,19 +27,25 @@ namespace Snake
             {
                 ConsoleKeyInfo direction = Console.ReadKey();
 
-                Move(direction);
+                while (!Console.KeyAvailable)
+                {
+                    Thread.Sleep(250);
+
+                    Move(direction);
+                }
+
             } while (true);
         }
 
         private void Move(ConsoleKeyInfo direction)
         {
+            if (CheckForCollision())
+            {
+                Console.WriteLine("GAME OVER");
+            }
+
             var elementToRemove = Snake.SnakeBody[0];
             Snake.SnakeBody.Remove(elementToRemove);
-
-            if (CollisionWithFood())
-            {
-                Eat();
-            }
 
             if (direction.Key == ConsoleKey.RightArrow)
             {
@@ -69,20 +76,44 @@ namespace Snake
             PrintSnake();
         }
 
+        private bool CheckForCollision()
+        {
+            if (CollisionWithFood())
+            {
+                Console.Clear();
+                PrintSnake();
+                Eat();
+            }
+
+            var snakeHead = Snake.GetHead();
+
+            //for (int i = 0; i < Snake.SnakeBody.Count - 1; i++)
+            //{
+            //    if (snakeHead.X == Snake.SnakeBody[i].X && snakeHead.Y == Snake.SnakeBody[i].Y)
+            //    {
+            //        return true;
+            //    }
+            //}
+
+            return false;
+        }
+
         private void Eat()
         {
-            var newElementToAdd = new Coordinates(Snake.SnakeBody[0].X, Snake.SnakeBody[0].Y);
-            Food = PlaceFood();
+            var newElementToAdd = new Coordinates(Food.X, Food.Y);
             Snake.SnakeBody.Add(newElementToAdd);
+            Food = PlaceFood();
+
+            Console.Clear();
+            PrintSnake();
         }
 
         private bool CollisionWithFood()
         {
-            var snakeHead = new Coordinates(Snake.SnakeBody[Snake.SnakeBody.Count - 1].X + 1, Snake.SnakeBody[Snake.SnakeBody.Count - 1].Y);
+            var snakeHead = Snake.GetHead();
 
             if (Food.X == snakeHead.X && Food.Y == snakeHead.Y)
             {
-                Console.WriteLine("Collision with food!");
                 return true;
             }
 
