@@ -121,6 +121,11 @@ namespace Snake
                 }
             }
 
+            if (snakeHead.X < 0 || snakeHead.X > Constants.Width || snakeHead.Y < 0 || snakeHead.Y > Constants.Height)
+            {
+                return true;
+            }
+
             if (CollisionWithFood())
             {
                 Console.Clear();

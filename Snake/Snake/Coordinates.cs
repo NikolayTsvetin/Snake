@@ -21,7 +21,7 @@ namespace Snake
             {
                 if (value < 0 || value > Constants.Width)
                 {
-                    throw new ArgumentException("Coordinates must be positive.");
+                    return;
                 }
 
                 _x = value;
@@ -38,7 +38,7 @@ namespace Snake
             {
                 if (value < 0 || value > Constants.Height)
                 {
-                    throw new ArgumentException("Coordinates must be positive.");
+                    return;
                 }
 
                 _y = value;
