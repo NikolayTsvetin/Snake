@@ -12,6 +12,7 @@ namespace Snake
         public Snake Snake { get; private set; }
         private Food Food { get; set; }
         private Random Random { get; set; } = new Random();
+        private ConsoleKeyInfo Direction { get; set; }
 
         public Game(Snake snake)
         {
@@ -25,13 +26,13 @@ namespace Snake
             PrintFood(Food);
             do
             {
-                ConsoleKeyInfo direction = Console.ReadKey();
+                Direction = Console.ReadKey();
 
                 while (!Console.KeyAvailable)
                 {
                     Thread.Sleep(250);
 
-                    Move(direction);
+                    Move(Direction);
                 }
 
             } while (true);
@@ -41,7 +42,10 @@ namespace Snake
         {
             if (CheckForCollision())
             {
+                Console.Clear();
                 Console.WriteLine("GAME OVER");
+
+                return;
             }
 
             var elementToRemove = Snake.SnakeBody[0];
@@ -78,22 +82,22 @@ namespace Snake
 
         private bool CheckForCollision()
         {
+            var snakeHead = Snake.GetHead();
+
+            for (int i = 0; i < Snake.SnakeBody.Count - 1; i++)
+            {
+                if (snakeHead.X == Snake.SnakeBody[i].X && snakeHead.Y == Snake.SnakeBody[i].Y)
+                {
+                    return true;
+                }
+            }
+
             if (CollisionWithFood())
             {
                 Console.Clear();
                 PrintSnake();
                 Eat();
             }
-
-            var snakeHead = Snake.GetHead();
-
-            //for (int i = 0; i < Snake.SnakeBody.Count - 1; i++)
-            //{
-            //    if (snakeHead.X == Snake.SnakeBody[i].X && snakeHead.Y == Snake.SnakeBody[i].Y)
-            //    {
-            //        return true;
-            //    }
-            //}
 
             return false;
         }
