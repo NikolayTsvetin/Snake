@@ -13,6 +13,7 @@ namespace Snake
         private Food Food { get; set; }
         private Random Random { get; set; } = new Random();
         private ConsoleKeyInfo Direction { get; set; }
+        private ConsoleKeyInfo _DirectionHolder { get; set; }
 
         public Game(Snake snake)
         {
@@ -28,6 +29,8 @@ namespace Snake
             {
                 Direction = Console.ReadKey();
 
+                ValidateDirection(Direction);
+
                 while (!Console.KeyAvailable)
                 {
                     Thread.Sleep(250);
@@ -38,11 +41,37 @@ namespace Snake
             } while (true);
         }
 
+        private void ValidateDirection(ConsoleKeyInfo direction)
+        {
+            if (Direction.Key == ConsoleKey.LeftArrow && _DirectionHolder.Key == ConsoleKey.RightArrow)
+            {
+                Direction = _DirectionHolder;
+            }
+
+            if (Direction.Key == ConsoleKey.RightArrow && _DirectionHolder.Key == ConsoleKey.LeftArrow)
+            {
+                Direction = _DirectionHolder;
+            }
+
+            if (Direction.Key == ConsoleKey.DownArrow && _DirectionHolder.Key == ConsoleKey.UpArrow)
+            {
+                Direction = _DirectionHolder;
+            }
+
+            if (Direction.Key == ConsoleKey.UpArrow && _DirectionHolder.Key == ConsoleKey.DownArrow)
+            {
+                Direction = _DirectionHolder;
+            }
+        }
+
         private void Move(ConsoleKeyInfo direction)
         {
+            _DirectionHolder = direction;
+
             if (CheckForCollision())
             {
                 Console.Clear();
+                Console.SetCursorPosition(Constants.Width / 2, Constants.Height / 2);
                 Console.WriteLine("GAME OVER");
 
                 return;

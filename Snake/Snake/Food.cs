@@ -16,10 +16,5 @@ namespace Snake
             X = x;
             Y = y;
         }
-
-        public void PlaceFood()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
